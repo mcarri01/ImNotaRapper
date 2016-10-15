@@ -2,7 +2,7 @@ import os
 import math
 import pyaudio
 from time import sleep
-import thread
+import threading
 
 def beep(num):
 	print("in beep")
@@ -56,8 +56,10 @@ def init_threads():
 	speak(num)
 	print("now before thread")
 	try:
-		thread.start_new_thread(beep, (num,))
-		thread.start_new_thread(speak, (num,))
+		beep_t = threading.Thread(target=beep, args=(num,))
+		speak_t = threading.Thread(target=speak, args=(num,))
+		beep_t.start()
+		speak_t.start()
 	except:
 		print("Error")
 
