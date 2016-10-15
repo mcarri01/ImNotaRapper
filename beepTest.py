@@ -5,7 +5,7 @@ from time import sleep
 import thread
 
 def beep(num):
-
+	print("in beep")
 	#sudo apt-get install python-pyaudio
 	PyAudio = pyaudio.PyAudio
 
@@ -41,18 +41,25 @@ def beep(num):
 	 	sleep(1)
 
 def speak(num):
+	print("in speak")
 	counter = 0
 	while(counter < num):
 		os.system("say 'hello world'")
 
 def init_threads():
-	count = 3
+	print("df")
+	num = 3
+	print("going into beep")
+	beep(num)
+	print("going into speak")
+	speak(num)
+	print("now before thread")
 	try:
-		thread.start_new_thread(beep, (count,))
-		thread.start_new_thread(speak, (count,))
+		thread.start_new_thread(beep, (num,))
+		thread.start_new_thread(speak, (num,))
 	except:
 		print("Error")
-		
+
 if __name__ == "__main__":
 	init_threads()
 	
