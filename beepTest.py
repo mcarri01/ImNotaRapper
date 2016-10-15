@@ -8,7 +8,9 @@ from tweet import get_sentiment
 
 
 def speak(tweet_data):
-	os.system("say -v Bad News 'Now this is a story all about how My life got flipped-turned upside down And I'd like to take a minute Just sit right there I'll tell you how I became the prince of a town called Bel-Air'")
+	text = tweet_data['tweet']
+	print(text)
+	os.system("say '" + text + "'")
 
 
 def start_beat(tweet_data):
@@ -30,6 +32,7 @@ def start_beat(tweet_data):
 		WAVEDATA = WAVEDATA+chr(int(math.sin(x/((BITRATE/FREQUENCY)/math.pi))*127+128))
 	try:
 		speak_t = threading.Thread(target=speak, args=(tweet_data,))
+		speak_t.start()
 	except:
 		print("Error threading")
 	while( speak_t.is_alive() ):
