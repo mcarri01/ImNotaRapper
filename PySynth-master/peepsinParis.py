@@ -13,7 +13,18 @@ import wave
 def speak(tweet_data):
 	text = tweet_data['tweet']
 	print(text)
-	os.system("say '" + text + "'")
+	rate = 0
+	if tweet_data['sentiment'] == 0:
+		rate = 300
+	elif tweet_data['sentiment'] == 1:
+		rate = 100
+	else:
+		rate = 200
+	print(rate)
+	final_rate = str(rate) + ' '
+
+	print "say -r " + final_rate + "'" + text.encode('utf-8') + "'"
+	os.system("say -r " + final_rate + "'" + text.encode('utf-8') + "'")
 
 
 def start_beat(tweet_data):
