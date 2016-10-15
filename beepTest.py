@@ -52,8 +52,8 @@ def init_threads():
 		beep_t.start()
 		speak_t.start()
 		# wait for threads
-		beep_t.join()
-		speak_t.join()
+		if not speak_t.isAlive():
+			exit()
 
 	except:
 		print("Error")
