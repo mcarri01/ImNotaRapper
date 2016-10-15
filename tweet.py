@@ -17,13 +17,14 @@ def get_sentiment(search):
 	access_token = oauth.Token(key=ACCESS_KEY, secret=ACCESS_SECRET)
 	client = oauth.Client(consumer, access_token)
 
-	endpoint = "https://api.twitter.com/1.1/search/tweets.json?q=" + search + "&count=1"
+	endpoint = "https://api.twitter.com/1.1/search/tweets.json?q=" + search + "&count=1&lang=en"
 	response, data = client.request(endpoint)
 	tweets = json.loads(data)
 	value = 0
 	text = ''
 	for tweet in tweets['statuses']:
-		#text = emoji_pattern.sub(r'', tweet['text'])
+		if tweet['retweet']:
+			return " "
 		text = tweet['text']
 		response = requests.post('http://text-processing.com/api/sentiment/', data={u'text': text})
 		sentiment = json.loads(response.text)
@@ -33,6 +34,11 @@ def get_sentiment(search):
 			value = 1
 		else:
 			value = 0.5
+	url_index = text.index("http")
+	end_index = text.index(".com")
+	beginning = text[:url_index]
+	ending = text[end_index + 5:]
+	text = beginning + ending
 	tweet_data = {"tweet": text, "sentiment": value}
 	return tweet_data
 
