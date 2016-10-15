@@ -42,7 +42,7 @@ def beep(num):
 
 def speak(num):
 	sleep(1)
-	os.system("say 'hello world'")
+	os.system("say 'Now this is a story all about how My life got flipped-turned upside down And I would d like to take a minuteJust sit right there I will tell you how I became the prince of a town called Bel-Air'")
 
 def init_threads():
 	num = 3
