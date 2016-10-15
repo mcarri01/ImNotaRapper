@@ -2,12 +2,16 @@ import os
 import math
 import pyaudio
 from time import sleep
+import thread
 import threading
-import pyttsx
-from gtts import gTTS
+from tweet import get_sentiment
 
-def beep(num):
-	print("in beep")
+
+def speak(value):
+	os.system("say -v Bad News 'Now this is a story all about how My life got flipped-turned upside down And I'd like to take a minute Just sit right there I'll tell you how I became the prince of a town called Bel-Air'")
+
+
+def beep(value):
 	#sudo apt-get install python-pyaudio
 	PyAudio = pyaudio.PyAudio
 
@@ -26,10 +30,7 @@ def beep(num):
 		WAVEDATA = WAVEDATA+chr(int(math.sin(x/((BITRATE/FREQUENCY)/math.pi))*127+128))
 
 
-	counter = 0
-
-	while(counter < num):
-		print(counter)
+	while( speak_t.is_alive() ):
 	 	p = PyAudio()
 		stream = p.open(format = p.get_format_from_width(1), 
 		                channels = 1, 
@@ -39,33 +40,27 @@ def beep(num):
 		stream.stop_stream()
 		stream.close()
 		p.terminate()
-	 	counter = counter+1
 	 	sleep(1)
 
-def speak(engine):
-	print('in sleep')
-	engine.connect('finished-utterance', finish)
-	engine.say("Now")
-	engine.runAndWait()
-	#os.system("say 'Now this is a story all about how My life got flipped-turned upside down And I would d like to take a minuteJust sit right there I will tell you how I became the prince of a town called Bel-Air'")
-def finish():
-	exit()
+beep_t = threading.Thread(target=beep, args=())
+speak_t = threading.Thread(target=speak, args=())
 
-def init_threads():
-	num = 5
-	engine = pyttsx.init()
+def init_threads(value):
+	
 	try:
-		beep_t = threading.Thread(target=beep, args=(num,))
-		speak_t = threading.Thread(target=speak, args=(engine,))
-		beep_t.start()
-		speak_t.start()
+		speak_t.start(value)
+		beep_t.start(value)
 		# wait for threads
-		speak_t.join()
-		beep_t.join()
+		speak_t.join(value)
+		beep_t.join(value)
+
 	except:
 		print("Error")
 
 if __name__ == "__main__":
-	init_threads()
+	print("please enter input")
+	search = raw_input()
+	value = get_sentiment(search)
+	init_threads(value)
 	
 
