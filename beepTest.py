@@ -41,25 +41,20 @@ def beep(num):
 	 	sleep(1)
 
 def speak(num):
-	print("in speak")
-	counter = 0
-	while(counter < num):
-		os.system("say 'hello world'")
-		counter = counter + 1
+	sleep(1)
+	os.system("say 'hello world'")
 
 def init_threads():
-	print("df")
 	num = 3
-	print("going into beep")
-	beep(num)
-	print("going into speak")
-	speak(num)
-	print("now before thread")
 	try:
 		beep_t = threading.Thread(target=beep, args=(num,))
 		speak_t = threading.Thread(target=speak, args=(num,))
 		beep_t.start()
 		speak_t.start()
+		# wait for threads
+		beep_t.join()
+		speak_t.join()
+
 	except:
 		print("Error")
 
