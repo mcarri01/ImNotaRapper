@@ -21,19 +21,18 @@ def get_sentiment(search):
 	response, data = client.request(endpoint)
 	tweets = json.loads(data)
 	value = 0
+	text = ''
 	for tweet in tweets['statuses']:
 		#text = emoji_pattern.sub(r'', tweet['text'])
 		text = tweet['text']
 		response = requests.post('http://text-processing.com/api/sentiment/', data={u'text': text})
 		sentiment = json.loads(response.text)
-		print(sentiment['label'])
-		print(sentiment['probability'])
 		if sentiment['label'] == 'pos':
 			value = 0
 		elif sentiment['label'] == 'neg':
 			value = 1
 		else:
 			value = 0.5
-	print(value)
-	return value
+	tweet_data = {"tweet": text, "sentiment": value}
+	return tweet_data
 
