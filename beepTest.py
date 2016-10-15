@@ -2,15 +2,12 @@ import os
 import math
 import pyaudio
 from time import sleep
-import thread
 import threading
+import pyttsx
+from gtts import gTTS
 
-
-def speak():
-	os.system("say -v Bad News 'Now this is a story all about how My life got flipped-turned upside down And I'd like to take a minute Just sit right there I'll tell you how I became the prince of a town called Bel-Air'")
-
-
-def beep():
+def beep(num):
+	print("in beep")
 	#sudo apt-get install python-pyaudio
 	PyAudio = pyaudio.PyAudio
 
@@ -29,7 +26,10 @@ def beep():
 		WAVEDATA = WAVEDATA+chr(int(math.sin(x/((BITRATE/FREQUENCY)/math.pi))*127+128))
 
 
-	while( speak_t.is_alive() ):
+	counter = 0
+
+	while(counter < num):
+		print(counter)
 	 	p = PyAudio()
 		stream = p.open(format = p.get_format_from_width(1), 
 		                channels = 1, 
@@ -39,19 +39,29 @@ def beep():
 		stream.stop_stream()
 		stream.close()
 		p.terminate()
+	 	counter = counter+1
 	 	sleep(1)
 
-beep_t = threading.Thread(target=beep, args=())
-speak_t = threading.Thread(target=speak, args=())
+def speak(engine):
+	print('in sleep')
+	engine.connect('finished-utterance', finish)
+	engine.say("Now")
+	engine.runAndWait()
+	#os.system("say 'Now this is a story all about how My life got flipped-turned upside down And I would d like to take a minuteJust sit right there I will tell you how I became the prince of a town called Bel-Air'")
+def finish():
+	exit()
 
 def init_threads():
+	num = 5
+	engine = pyttsx.init()
 	try:
-		speak_t.start()
+		beep_t = threading.Thread(target=beep, args=(num,))
+		speak_t = threading.Thread(target=speak, args=(engine,))
 		beep_t.start()
+		speak_t.start()
 		# wait for threads
 		speak_t.join()
 		beep_t.join()
-
 	except:
 		print("Error")
 

@@ -5,9 +5,7 @@ import json
 import requests
 import re
 
-def get_sentiment():
-	print("Enter a search term:")
-	search = raw_input()
+def get_sentiment(search):
 	# Our keys bby
 	CONSUMER_KEY = "ehAudXAxn29MEFE9JdWNoNK35"
 	CONSUMER_SECRET = "7zE9qGclS7tl2yP7NQIHu3foPK1X9pB2xEv84I6snaciW7VCsF"
@@ -36,5 +34,6 @@ def get_sentiment():
 			value = 1
 		else:
 			value = 0.5
+	print(value)
 	return value
 
