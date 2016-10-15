@@ -45,6 +45,7 @@ def speak(num):
 	counter = 0
 	while(counter < num):
 		os.system("say 'hello world'")
+		counter = counter + 1
 
 def init_threads():
 	print("df")
