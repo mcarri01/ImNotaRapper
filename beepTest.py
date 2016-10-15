@@ -45,11 +45,15 @@ def speak(num):
 	while(counter < num):
 		os.system("say 'hello world'")
 
-if __name__ == "__main__":
+def init_threads():
 	count = 3
 	try:
 		thread.start_new_thread(beep, (count,))
 		thread.start_new_thread(speak, (count,))
 	except:
 		print("Error")
+		
+if __name__ == "__main__":
+	init_threads()
+	
 
